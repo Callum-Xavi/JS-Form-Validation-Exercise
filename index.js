@@ -3,14 +3,23 @@ const form = document.querySelector("#example-form")
 // event "handler"
 form.addEventListener("submit", (event) => {
     const ageInput = document.querySelector("#age-input")
+    const age = ageInput.value
+    let ageValidationResult = ageValidator(age)
+
+    if (ageValidationResult) {
+      // ONLY PUT THE VALUE INTO OUTPUT
+      // if it passes validation
+      const outputTarget = document.querySelector("#output")
+      outputTarget.innerHTML = "<p>Age: " + ageInput.value + "</p>"
+      // clear the values from the form
+      ageInput.value = ""
+    } else {
+      console.log("Can not submit!");
+    }
 
 
-    // ONLY PUT THE VALUE INTO OUTPUT
-    // if it passes validation
-    const outputTarget = document.querySelector("#output")
-    outputTarget.innerHTML = "<p>Age: " + ageInput.value + "</p>"
-    // clear the values from the form
-    ageInput.value = ""
+
+
 
     // prevent submission
     event.preventDefault()
@@ -23,7 +32,7 @@ ageInput.addEventListener("keyup", () => {
 })
 
 const ageValidator = (age) => {
-    console.log(age)
+    // console.log(age)
     const numberAge = Number(age)
     if (!isNaN(numberAge)) {
         if (numberAge < 0 || numberAge > 114) {
@@ -32,15 +41,18 @@ const ageValidator = (age) => {
             // display in HTML
             const errorBox = document.querySelector("#age-error")
             errorBox.innerText = "Invalid age! Too young or old."
+            return false;
         } else {
             const errorBox = document.querySelector("#age-error")
             errorBox.innerText = ""
+            return true;
         }
     } else {
         // handle this error message
         console.log("Age is not a valid number!")
         const errorBox = document.querySelector("#age-error")
         errorBox.innerText = "Age is not a valid number!"
+        return false;
     }
 }
 
